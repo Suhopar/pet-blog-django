@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Create Post</h2>
+    <form class="form-group" action="{% url 'post-create' %}" id="postForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- --- --- TITLE --- --- -->
+        <input type="text" name="title" class="form-control" placeholder="title" required maxlength="255"><br/>
+        <!-- --- --- CATEGORY --- --- -->
+        <label for="exampleFormControlSelect1">Category</label>
+        <select name="category" class="form-control" id="exampleFormControlSelect1">
+            {% for category in category_list %}
+            <option class="disabled" name="{{category.title}}" value="{{category.id}}">{{category.title}}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <!-- --- --- CONTENT --- --- -->
+        <textarea rows="4" cols="50" name="content" class="form-control" placeholder="content" required maxlength="2048"></textarea><br/>
+        <!-- --- --- IMAGE --- --- -->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupFile01">Image</label>
+          <input type="file" name="image" accept="image/*" class="form-control" id="inputGroupFile01">
+        </div><br/>
+        <!-- --- --- SAVE BUTTON --- --- -->
+        <button class="btn btn-primary rounded-0 shadow-sm btn-block" type="submit" id="submitBtn">Save</button>
+
+    </form>
+<br/>
+</div>
+<!-- --- --- VALIDATION SCRIPT --- --- -->
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+        var title = document.querySelector('[name="title"]').value;
+        var category = document.querySelector('[name="category"]').value;
+        var content = document.querySelector('[name="content"]').value;
+
+        if (!title || !category || !content) {
+            alert('All fields are required!');
+            return;
+        }
+
+        document.getElementById('postForm').submit();
+    });
+</script>
+{% endblock content %}

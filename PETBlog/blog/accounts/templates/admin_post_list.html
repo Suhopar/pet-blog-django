@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <!-- --- --- Publication sorting --- --- -->
+        <div class="dropdown">
+            <a class="btn btn-secondary rounded-0 icon-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-square" viewBox="0 0 16 16">
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                  <path d="M6 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+                Sorting by
+            </a>
+            <ul class="dropdown-menu rounded-0">
+                <li><a class="dropdown-item" href="?sort_by=title&sort_dir=asc">Sort by Title (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=title&sort_dir=desc">Sort by Title (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=author&sort_dir=asc">Sort by Author (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=author&sort_dir=desc">Sort by Author (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=category&sort_dir=asc">Sort by Category (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=category&sort_dir=desc">Sort by Category (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=date&sort_dir=asc">Sort by Date (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=date&sort_dir=desc">Sort by Date (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=likes&sort_dir=asc">Sort by Likes (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=likes&sort_dir=desc">Sort by Likes (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=comments&sort_dir=asc">Sort by Comments (Asc)</a></li>
+                <li><a class="dropdown-item" href="?sort_by=comments&sort_dir=desc">Sort by Comments (Desc)</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item" href="?sort_by=hidden">Hidden Posts</a></li>
+                <li><a class="dropdown-item" href="?sort_by=published">Published Posts</a></li>
+
+            </ul>
+        </div>
+
+
+        <!-- --- --- List of user publications --- --- -->
+        {% if post_list %}
+        <table class="table caption-top">
+            <caption>List of user publications ({{post_count}})</caption>
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date</th>
+                <th scope="col">Likes</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Status</th>
+                <th scope="col">Do</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in post_list %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{post.author}}</td>
+                <td>{{post.category.title}}</td>
+                <td>{{ post.date }}</td>
+                <td>{{ post.likes.count }}</td>
+                <td>{{ post.comment_set.count }}</td>
+                <td>{{ post.status }}</td>
+
+                <td>
+                    <!-- --- --- Buttons --- --- -->
+                    <div class="btn-group" role="group" aria-label="Post Actions">
+                        <a href="{% url 'post' post.id %}" class="btn btn-secondary rounded-0 btn-sm icon-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-book" viewBox="0 0 16 16">
+                                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                            </svg>
+                            Read
+                        </a>
+
+                        {% if post.author == user or user.role == "admin" %}
+                        <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-secondary rounded-0 btn-sm icon-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                            Edit
+                        </a>
+                        {% if post.status == 'published' %}
+                        <a href="{% url 'post-change-status' pk=post.pk %}?status=hidden"
+                           class="btn btn-secondary rounded-0 btn-sm icon-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+                              <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+                              <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+                              <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+                            </svg>
+                            Hide &nbsp;&nbsp;&nbsp;
+                        </a>
+                        {% else %}
+                        <a href="{% url 'post-change-status' pk=post.pk %}?status=published"
+                           class="btn btn-secondary rounded-0 btn-sm icon-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                            </svg>
+                            Publish
+                        </a>
+                        {% endif %}
+                        <form class="form-group d-inline" action="{% url 'remove-post' post.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger rounded-0 btn-sm icon-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                </svg>
+                                Delete
+                            </button>
+                        </form>
+
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+        <div class="ol-md-4 mx-auto ">
+            <h1>No found.</h1>
+        </div>
+        {% endif %}
+
+
+        <!-- --- --- Pagination --- --- -->
+        {% if post_list %}
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                {% if post_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+
+                {% endif %}
+
+                {% for page_num in post_list.paginator.page_range %}
+                <li class="page-item {% if page_num == post_list.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if post_list.has_next %}
+
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ post_list.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

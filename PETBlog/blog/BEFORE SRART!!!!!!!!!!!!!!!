@@ -1,0 +1,11 @@
+1. Connect your database in the settings.py file.
+2. Migrations.
+3. Run the fill_database.py file before starting to populate the database.
+4. Use adminuser as a super user {
+        username='adminuser',
+        password='AU0110*',
+        role='admin',
+        first_name='Admin',
+        last_name='Userinsky',
+        is_staff=True
+    }

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>All Users</h2>
+<!-- --- --- Sorting of user --- --- -->
+
+<div class="dropdown">
+    <a class="btn btn-secondary rounded-0 icon-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-square"
+             viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+            <path d="M6 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+        Sorting by
+    </a>
+    <ul class="dropdown-menu rounded-0">
+        <li><a class="dropdown-item" href="?sort_by=id&sort_dir=asc">Sort by ID (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=id&sort_dir=desc">Sort by ID (Desc)</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="?sort_by=username&sort_dir=asc">Sort by Username (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=username&sort_dir=desc">Sort by Username (Desc)</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="?sort_by=num_posts&sort_dir=asc">Sort by Number of Posts (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=num_posts&sort_dir=desc">Sort by Number of Posts (Desc)</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="?sort_by=date_joined&sort_dir=asc">Sort by Date Joined (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=date_joined&sort_dir=desc">Sort by Date Joined (Desc)</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="?sort_by=role&sort_dir=asc">Sort by Role (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=role&sort_dir=desc">Sort by Role (Desc)</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="?sort_by=is_staff&sort_dir=asc">Sort by Superuser (Asc)</a></li>
+        <li><a class="dropdown-item" href="?sort_by=is_staff&sort_dir=desc">Sort by Superuser (Desc)</a></li>
+    </ul>
+</div>
+<!-- --- --- List of users --- --- -->
+
+<table class="table caption-top">
+    <caption>List all users ({{user_count}})</caption>
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">image</th>
+        <th scope="col">username</th>
+        <th scope="col">count posts</th>
+        <th scope="col">date</th>
+        <th scope="col">role</th>
+        <th scope="col">superuser</th>
+        <th scope="col">usual_ban</th>
+        <th scope="col">absolute_ban</th>
+        <th scope="col">do</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in user_list %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td><img src="{{ user.profile_image.url }}" alt="" width="30" height="30" class="rounded"></td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.num_posts }}</td>
+        <td>{{ user.date_joined }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.is_staff }}</td>
+        <td>{{ user.usual_ban }}</td>
+        <td>{{ user.absolute_ban }}</td>
+        <td>
+            <!-- --- --- Buttons --- --- -->
+            <div class="btn-group" role="group" aria-label="Post Actions">
+                <a href="{% url 'profile' pk=user.pk %}" class="btn btn-secondary rounded-0 btn-sm icon-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-book" viewBox="0 0 16 16">
+                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                    </svg>
+                    More</a>
+                <form method="post" action="{% url 'change-user-role' pk=user.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="new_role"
+                           value="{% if user.role == 'admin' %}user{% else %}admin{% endif %}">
+                    <button type="submit" class="btn btn-secondary rounded-0 btn-sm icon-link">
+                        {% if user.role == 'admin' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-tree" viewBox="0 0 16 16">
+                            <path d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"/>
+                        </svg>
+                        Make User &nbsp;&nbsp;
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-hammer" viewBox="0 0 16 16">
+                            <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z"/>
+                        </svg>
+                        Make Admin
+                        {% endif %}
+                    </button>
+                </form>
+                <a href="{% url 'profile-edit' user.pk %}" class="btn btn-secondary rounded-0 btn-sm icon-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg>
+                    edit</a>
+                <form class="form-group d-inline" action="{% url 'remove-user' user.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger rounded-0 btn-sm icon-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-trash3" viewBox="0 0 16 16">
+                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                        </svg>
+                        Delete User
+                    </button>
+                </form>
+
+
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+        <!-- --- --- Pagination --- --- -->
+        {% if user_list %}
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                {% if user_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+
+                {% endif %}
+
+                {% for page_num in user_list.paginator.page_range %}
+                <li class="page-item {% if page_num == user_list.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if user_list.has_next %}
+
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ user_list.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+{% endblock %}

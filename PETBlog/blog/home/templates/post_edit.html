@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Edit Post</h2>
+  <form method="post" action="{% url 'post_edit' pk=post.pk %}" id="editPostForm" enctype="multipart/form-data" >
+    {% csrf_token %}
+    {{ form.title|as_crispy_field }}
+      {{ form.category|as_crispy_field }}
+    <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">Content</label>
+        <textarea class="form-control" id="{{ form.content.id_for_label }}" name="{{ form.content.html_name }}" rows="10">{{ form.content.value }}</textarea>
+    </div>
+    <br/>
+    {{ form.image|as_crispy_field }}
+    <br/>
+    <button type="submit" class="btn btn-primary rounded-0 shadow-sm btn-block" id="saveChangesBtn">Save Changes</button>
+
+  </form>
+  <br/>
+</div>
+
+<!-- --- --- VALIDATION SCRIPT --- --- -->
+<script>
+    document.getElementById('saveChangesBtn').addEventListener('click', function(event) {
+        var title = document.querySelector('[name="title"]').value;
+        var category = document.querySelector('[name="category"]').value;
+        var content = document.querySelector('[name="content"]').value;
+
+        if (!title || !category || !content) {
+            alert('All fields are required!');
+            return;
+        }
+
+        if (title.length > 255) {
+            alert('Title cannot exceed 255 characters!');
+            return;
+        }
+
+        if (content.length > 2048) {
+            alert('Content cannot exceed 2048 characters!');
+            return;
+        }
+
+        document.getElementById('editPostForm').submit();
+    });
+</script>
+{% endblock %}

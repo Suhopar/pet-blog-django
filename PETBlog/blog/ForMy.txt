@@ -1,0 +1,49 @@
+HEROKU
+(venv) C:\Users\Lenovo\Downloads\\python_proj\OLC_Systems_proj\PETBlogHeroku\pet-blog-ats\PETBlog\blog>
+git init
+h eroku git:remote -a pet-blog-a
+git add .
+git commit -am "fix reg form"
+git push h eroku master
+
+--- venv --- --- ---
+install venv - pip install virtualenv
+add venv - virtualenv venv
+activate venv:
+    cd venv/Scripts
+    activate
+    cd ../..
+    cd ../../blog
+
+    short:
+    cd C:\Users\Lenovo\Downloads\\python_proj\OLC_Systems_proj\PETBlogHeroku\pet-blog-ats\PETBlog\venv\Scripts && activate && cd ../../blog
+
+--- django --- --- ---
+install django - pip install django
+create django project - django-admin startproject NAME
+
+
+-- in app --- --- ---
+create app - python manage.py startapp NAME
+(from apps directory - python ../manage.py startapp NAME)
+
+run server - python manage.py runserver
+port 5000 - python manage.py runserver 0.0.0.0:5000
+
+
+-- migrations --- --- ---
+make migrations - python manage.py makemigrations (NAME - for app)
+migrate - python manage.py migrate (NAME - for app)
+Super User - python manage.py createsuperuser
+MY SUPER USER:
+Username: ysyadmin
+Email address: ysyadmin@gmail.com
+Password: AU0110
+
+
+------------------------------------
+Server [localhost]: localhost
+Database [postgres]: OLCSBlog
+Port [5433]: 5433
+Username [postgres]: postgres
+Password for user postgres:

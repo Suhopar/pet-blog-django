@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- --- --- User's liked post  --- --- -->
+<h2>{{ request.user.username }}'s like publications:</h2>
+
+<hr>
+{% include 'post_list.html' %}
+
+{% endblock content %}

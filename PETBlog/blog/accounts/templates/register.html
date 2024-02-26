@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-11 col-md-4 mx-auto mt-5">
+        <h1>Sign Up</h1>
+        <form method="POST" id="registerForm" action="{% url 'register' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button class="btn btn-secondary" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="pt-3">
+            <small class="text-muted">Already have an account? <a href="{% url 'login' %}" class="ml-2"> Log
+                In</a></small>
+        </div>
+    </div>
+</div>
+
+<!-- --- --- VALIDATION SCRIPT --- --- -->
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+
+        var form = this;
+        var username = form.querySelector('[name="username"]').value;
+        var firstName = form.querySelector('[name="first_name"]').value;
+        var lastName = form.querySelector('[name="last_name"]').value;
+        var email = form.querySelector('[name="email"]').value;
+        var password1 = form.querySelector('[name="password1"]').value;
+        var password2 = form.querySelector('[name="password2"]').value;
+
+        if (!username || !firstName || !lastName || !email || !password1 || !password2) {
+            alert('All fields are required!');
+            event.preventDefault();
+            return;
+        }
+
+        if (password1.length < 8) {
+            alert('Your password must contain at least 8 characters.');
+            event.preventDefault();
+            return;
+        }
+
+        if (password1.search(/[a-zA-Z]/) == -1) {
+            alert('Your password must contain at least one letter.');
+            event.preventDefault();
+            return;
+        }
+
+        if (password1.search(/[0-9]/) == -1) {
+            alert('Your password must contain at least one digit.');
+            event.preventDefault();
+            return;
+        }
+
+        if (password1.search(/[^a-zA-Z0-9]/) == -1) {
+            alert('Your password must contain at least one special character.');
+            event.preventDefault();
+            return;
+        }
+
+        if (password1 !== password2) {
+            alert('Passwords do not match!');
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
+
+{% endblock content %}
